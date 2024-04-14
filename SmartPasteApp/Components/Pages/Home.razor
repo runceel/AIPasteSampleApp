@@ -1,0 +1,89 @@
+﻿@page "/"
+@using SmartPasteLib
+@using System.ComponentModel
+@inject IJSRuntime JSRuntime
+@inject ISmartPaste SmartPaste
+
+@* _formData が null のケースはバグなので速やかにエラーにする *@
+@if (_formData is null) throw new InvalidOperationException();
+
+<PageTitle>Home</PageTitle>
+
+<h1>Smart Paste テスト</h1>
+
+
+<EditForm Model="_formData">
+    <div>
+        <label for="Name" class="form-label">名前</label>
+        <InputText id="Name" @bind-Value="_formData.Name" 
+            class="form-control" />
+    </div>
+    <div>
+        <label for="Email" class="form-label">メールアドレス</label>
+        <InputText id="Email" @bind-Value="_formData.Email" 
+            class="form-control" />
+    </div>
+    <div>
+        <label for="ZipCode" class="form-label">郵便番号</label>
+        <InputText id="ZipCode" @bind-Value="_formData.ZipCode" 
+            class="form-control" />
+    </div>
+    <div>
+        <label for="Address" class="form-label">住所</label>
+        <InputText id="Address" @bind-Value="_formData.Address" 
+            class="form-control" />
+    </div>
+    <div>
+        <label for="Request" class="form-label">要望内容</label>
+        <InputText id="Request" @bind-Value="_formData.Request" 
+            class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">送信</button>
+    <button class="btn btn-secondary"
+            @onclick="OnSmartPasteButtonClick">
+        Smart Paste
+    </button>
+</EditForm>
+
+@code {
+    private FormData? _formData;
+
+    protected override void OnInitialized()
+    {
+        _formData ??= new();
+    }
+
+    private async Task OnSmartPasteButtonClick()
+    {
+        // クリップボードからテキストを取得
+        var text = await JSRuntime.InvokeAsync<string>(
+            "navigator.clipboard.readText");
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return;
+        }
+
+        // テキストを解析してデータを作成
+        var result = await SmartPaste.CreateDataAsync<FormData>(text, default);
+        if (result != null)
+        {
+            // データを反映
+            _formData = result;
+        }
+    }
+
+    // 入力データ
+    class FormData
+    {
+        [Description("名前")]
+        public string Name { get; set; } = "";
+        [Description("メールアドレス")]
+        public string Email { get; set; } = "";
+        [Description("郵便番号")]
+        public string ZipCode { get; set; } = "";
+        [Description("住所")]
+        public string Address { get; set; } = "";
+        [Description("要望内容")]
+        public string Request { get; set; } = "";
+    }
+}

@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIPasteSampleApp", "AIPasteSampleApp\AIPasteSampleApp.csproj", "{02703E80-874B-4E7D-871E-72C9335B165C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartPasteLib", "SmartPasteLib\SmartPasteLib.csproj", "{3DD3C0BB-229C-441A-9931-EBB6E9A1F937}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmatPasteTestApp", "SmatPasteTestApp\SmatPasteTestApp.csproj", "{3338FA06-ADDC-446B-A78A-0CFE05F05088}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPasteApp", "SmartPasteApp\SmartPasteApp.csproj", "{54BA7815-A423-4035-AFF7-4AE7681A13ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{02703E80-874B-4E7D-871E-72C9335B165C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02703E80-874B-4E7D-871E-72C9335B165C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02703E80-874B-4E7D-871E-72C9335B165C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02703E80-874B-4E7D-871E-72C9335B165C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DD3C0BB-229C-441A-9931-EBB6E9A1F937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DD3C0BB-229C-441A-9931-EBB6E9A1F937}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DD3C0BB-229C-441A-9931-EBB6E9A1F937}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DD3C0BB-229C-441A-9931-EBB6E9A1F937}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3338FA06-ADDC-446B-A78A-0CFE05F05088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3338FA06-ADDC-446B-A78A-0CFE05F05088}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3338FA06-ADDC-446B-A78A-0CFE05F05088}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3338FA06-ADDC-446B-A78A-0CFE05F05088}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54BA7815-A423-4035-AFF7-4AE7681A13ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54BA7815-A423-4035-AFF7-4AE7681A13ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54BA7815-A423-4035-AFF7-4AE7681A13ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54BA7815-A423-4035-AFF7-4AE7681A13ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
