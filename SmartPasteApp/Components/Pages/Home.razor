@@ -15,38 +15,45 @@
 <EditForm Model="_formData">
     <div>
         <label for="Name" class="form-label">名前</label>
-        <InputText id="Name" @bind-Value="_formData.Name" 
-            class="form-control" />
+        <InputText id="Name" @bind-Value="_formData.Name"
+                   class="form-control" />
     </div>
     <div>
         <label for="Email" class="form-label">メールアドレス</label>
-        <InputText id="Email" @bind-Value="_formData.Email" 
-            class="form-control" />
+        <InputText id="Email" @bind-Value="_formData.Email"
+                   class="form-control" />
     </div>
     <div>
         <label for="ZipCode" class="form-label">郵便番号</label>
-        <InputText id="ZipCode" @bind-Value="_formData.ZipCode" 
-            class="form-control" />
+        <InputText id="ZipCode" @bind-Value="_formData.ZipCode"
+                   class="form-control" />
     </div>
     <div>
         <label for="Address" class="form-label">住所</label>
-        <InputText id="Address" @bind-Value="_formData.Address" 
-            class="form-control" />
+        <InputText id="Address" @bind-Value="_formData.Address"
+                   class="form-control" />
     </div>
     <div>
         <label for="Request" class="form-label">要望内容</label>
-        <InputText id="Request" @bind-Value="_formData.Request" 
-            class="form-control" />
+        <InputText id="Request" @bind-Value="_formData.Request"
+                   class="form-control" />
     </div>
-    <button type="submit" class="btn btn-primary">送信</button>
+
+    <button type="submit" class="btn btn-primary" disabled="@_loading">送信</button>
     <button class="btn btn-secondary"
-            @onclick="OnSmartPasteButtonClick">
+            @onclick="OnSmartPasteButtonClick"
+            disabled="@_loading">
+        @if (_loading)
+        {
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+        }
         Smart Paste
     </button>
 </EditForm>
 
 @code {
     private FormData? _formData;
+    private bool _loading;
 
     protected override void OnInitialized()
     {
@@ -55,20 +62,29 @@
 
     private async Task OnSmartPasteButtonClick()
     {
-        // クリップボードからテキストを取得
-        var text = await JSRuntime.InvokeAsync<string>(
-            "navigator.clipboard.readText");
-        if (string.IsNullOrWhiteSpace(text))
+        if (_loading) return;
+        _loading = true;
+        try
         {
-            return;
-        }
+            // クリップボードからテキストを取得
+            var text = await JSRuntime.InvokeAsync<string>(
+                "navigator.clipboard.readText");
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return;
+            }
 
-        // テキストを解析してデータを作成
-        var result = await SmartPaste.CreateDataAsync<FormData>(text, default);
-        if (result != null)
+            // テキストを解析してデータを作成
+            var result = await SmartPaste.CreateDataAsync<FormData>(text, default);
+            if (result != null)
+            {
+                // データを反映
+                _formData = result;
+            }
+        }
+        finally
         {
-            // データを反映
-            _formData = result;
+            _loading = false;
         }
     }
 

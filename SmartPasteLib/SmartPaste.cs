@@ -1,4 +1,5 @@
-﻿using Microsoft.SemanticKernel;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Planning;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -58,14 +59,21 @@ public class SmartPaste(Kernel kernel) : ISmartPaste
 #pragma warning disable SKEXP0060
         // 実験的機能のため pragma を使って警告を抑制
         // プランナーを使ってユーザーの入力を読み取る
-        var planner = new FunctionCallingStepwisePlanner();
+        var planner = new FunctionCallingStepwisePlanner(
+            options: new()
+            {
+                ExecutionSettings = new()
+                {
+                    Temperature = 0,
+                }
+            });
         // プランナーを使ってプラグインを実行
         // 戻り値は今回は使わないので _ で受ける
         _ = await planner.ExecuteAsync(
             localKernel,
             $"""
-            以下のユーザーの入力を読み取って {typeof(T).Name} の値を設定してください。
-            不足する情報は検索をして補完してください。
+            以下のユーザーの入力や関連する情報を検索して {typeof(T).Name} の値を設定してください。
+            設定すべき値がわからない場合は空の値や数字の場合は 0 を入力してください。
 
             ### ユーザーの入力
             {text}
