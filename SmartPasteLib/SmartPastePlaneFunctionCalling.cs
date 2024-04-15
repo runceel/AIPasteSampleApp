@@ -43,7 +43,9 @@ public class SmartPastePlaneFunctionCalling(Kernel kernel) : ISmartPaste
         // Function calling を有効にした OpenAI の呼び出しオプションを生成
         var options = new OpenAIPromptExecutionSettings
         {
+            // Function calling の有効化
             ToolCallBehavior = ToolCallBehavior.EnableKernelFunctions,
+            // JSON を生成するように指示するシステムプロンプト
             ChatSystemPrompt = $"""
                 ### あなたへの指示
                 ユーザーの入力を読み取り、以下のプロパティを持った単一の JSON オブジェクトを作成してください。
@@ -70,7 +72,9 @@ public class SmartPastePlaneFunctionCalling(Kernel kernel) : ISmartPaste
             MaxTokens = 1000,
         };
 
+        // JSON の生成
         var json = await InvokeAsync(kernel, text, metadata, options, cancellationToken);
+        // 結果をオブジェクトにして返す
         return json == null ? 
             null : 
             JsonSerializer.Deserialize<T>(json, JsonSerializerOptions);
@@ -78,24 +82,31 @@ public class SmartPastePlaneFunctionCalling(Kernel kernel) : ISmartPaste
 
     private static async Task<string?> InvokeAsync(Kernel kernel, string text, TypeMetadata metadata, OpenAIPromptExecutionSettings options, CancellationToken cancellationToken)
     {
-        var chatHistory = new ChatHistory();
-        chatHistory.AddUserMessage(text);
         var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
 
+        // ユーザーの入力を持った ChatHistory を作成
+        var chatHistory = new ChatHistory();
+        chatHistory.AddUserMessage(text);
+
+        // 最大でオブジェクトのプロパティ数だけ OpenAI を呼び出すようにする
         for (int i = 0; i < metadata.Properties.Count; i++)
         {
+            // ChatCompletion を実行
             var result = (OpenAIChatMessageContent)await chatCompletionService.GetChatMessageContentAsync(chatHistory, options, kernel, cancellationToken);
             chatHistory.Add(result);
 
+            // ツール呼び出しを取得
             var toolCalls = result.GetOpenAIFunctionToolCalls();
             if (toolCalls.Count == 0)
             {
+                // ツール呼び出しがない場合は結果を返す
                 return result.Items
                     .OfType<TextContent>()
                     .FirstOrDefault()
                     ?.Text;
             }
 
+            // ツール呼び出しを実行
             bool invoked = false;
             foreach (var toolCall in toolCalls)
             {
@@ -113,12 +124,14 @@ public class SmartPastePlaneFunctionCalling(Kernel kernel) : ISmartPaste
                 }
             }
 
+            // ツールが呼び出されていない場合は何か不具合なのでとりあえず null を返す。
             if (!invoked)
             {
                 return null;
             }
         }
 
+        // 何の成果も得られませんでした？
         return null;
     }
 }
