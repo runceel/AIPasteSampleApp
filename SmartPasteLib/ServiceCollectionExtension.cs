@@ -37,7 +37,7 @@ public static class ServiceCollectionExtensions
         // Kernel を登録
         services.AddKernel();
         // ISmartPaste を実装するクラスを追加
-        services.AddTransient<ISmartPaste, SmartPaste>();
+        services.AddTransient<ISmartPaste, SmartPastePlaneFunctionCalling>();
         return services;
     }
 }
