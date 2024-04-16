@@ -3,6 +3,7 @@
 @using System.ComponentModel
 @inject IJSRuntime JSRuntime
 @inject ISmartPaste SmartPaste
+@inject ILogger<Home> logger
 
 @* _formData が null のケースはバグなので速やかにエラーにする *@
 @if (_formData is null) throw new InvalidOperationException();
@@ -11,32 +12,43 @@
 
 <h1>Smart Paste テスト</h1>
 
+@if (!string.IsNullOrWhiteSpace(_alertMessage))
+{
+    <div class="alert alert-warning" role="alert">
+        @_alertMessage
+    </div>
+}
 
 <EditForm Model="_formData">
     <div>
         <label for="Name" class="form-label">名前</label>
         <InputText id="Name" @bind-Value="_formData.Name"
-                   class="form-control" />
+                   class="form-control"
+                   readonly="@_loading" />
     </div>
     <div>
         <label for="Email" class="form-label">メールアドレス</label>
         <InputText id="Email" @bind-Value="_formData.Email"
-                   class="form-control" />
+                   class="form-control" 
+                   readonly="@_loading" />
     </div>
     <div>
         <label for="ZipCode" class="form-label">郵便番号</label>
         <InputText id="ZipCode" @bind-Value="_formData.ZipCode"
-                   class="form-control" />
+                   class="form-control"
+                   readonly="@_loading" />
     </div>
     <div>
         <label for="Address" class="form-label">住所</label>
         <InputText id="Address" @bind-Value="_formData.Address"
-                   class="form-control" />
+                   class="form-control" 
+                   readonly="@_loading" />
     </div>
     <div>
         <label for="Request" class="form-label">要望内容</label>
         <InputText id="Request" @bind-Value="_formData.Request"
-                   class="form-control" />
+                   class="form-control"
+                   readonly="@_loading" />
     </div>
 
     <button type="submit" class="btn btn-primary" disabled="@_loading">送信</button>
@@ -54,6 +66,7 @@
 @code {
     private FormData? _formData;
     private bool _loading;
+    private string _alertMessage = "";
 
     protected override void OnInitialized()
     {
@@ -81,6 +94,12 @@
                 // データを反映
                 _formData = result;
             }
+            _alertMessage = "";
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "スマートペーストの実行中にエラーが発生しました。");
+            _alertMessage = "スマートペーストの実行中にエラーが発生しました。";
         }
         finally
         {
