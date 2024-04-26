@@ -29,7 +29,7 @@
     <div>
         <label for="Email" class="form-label">メールアドレス</label>
         <InputText id="Email" @bind-Value="_formData.Email"
-                   class="form-control" 
+                   class="form-control"
                    readonly="@_loading" />
     </div>
     <div>
@@ -41,14 +41,14 @@
     <div>
         <label for="Address" class="form-label">住所</label>
         <InputText id="Address" @bind-Value="_formData.Address"
-                   class="form-control" 
+                   class="form-control"
                    readonly="@_loading" />
     </div>
     <div>
         <label for="Request" class="form-label">要望内容</label>
-        <InputText id="Request" @bind-Value="_formData.Request"
-                   class="form-control"
-                   readonly="@_loading" />
+        <InputTextArea id="Request" @bind-Value="_formData.Request"
+                       class="form-control"
+                       readonly="@_loading" />
     </div>
 
     <button type="submit" class="btn btn-primary" disabled="@_loading">送信</button>
