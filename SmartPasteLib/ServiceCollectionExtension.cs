@@ -1,6 +1,7 @@
 ﻿using Azure.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 
@@ -34,6 +35,11 @@ public static class ServiceCollectionExtensions
                     options.Endpoint,
                     options.ApiKey);
         });
+        services.AddSingleton<CreateRequestSummaryPlugin>();
+        services.AddSingleton(sp =>
+            KernelPluginFactory.CreateFromObject(
+                sp.GetRequiredService<CreateRequestSummaryPlugin>()));
+
         // Kernel を登録
         services.AddKernel();
         // ISmartPaste を実装するクラスを追加

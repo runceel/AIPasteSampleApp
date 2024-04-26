@@ -35,6 +35,7 @@ public class SmartPastePlaneFunctionCalling(Kernel kernel) : ISmartPaste
                 h.AppendLiteral(property.Description);
                 h.AppendLiteral("\n");
             }
+
             return h.ToStringAndClear();
         }
 

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Planning;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace SmartPasteLib;
 public class SmartPaste(Kernel kernel) : ISmartPaste
@@ -12,6 +14,7 @@ public class SmartPaste(Kernel kernel) : ISmartPaste
     {
         // 文字列から数値への変換を許可
         NumberHandling = JsonNumberHandling.AllowReadingFromString,
+        Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
     };
 
     public async ValueTask<T?> CreateDataAsync<T>(string text, 
