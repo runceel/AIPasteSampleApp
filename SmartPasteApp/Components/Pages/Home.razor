@@ -19,7 +19,7 @@
     </div>
 }
 
-<EditForm Model="_formData">
+<EditForm Model="_formData" OnSubmit="OnSubmit">
     <div>
         <label for="Name" class="form-label">名前</label>
         <InputText id="Name" @bind-Value="_formData.Name"
@@ -105,6 +105,11 @@
         {
             _loading = false;
         }
+    }
+
+    private void OnSubmit(EditContext editContext)
+    {
+        _formData = new();
     }
 
     // 入力データ
