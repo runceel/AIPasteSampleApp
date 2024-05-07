@@ -22,3 +22,13 @@
     ```
 3. Visual Studio で `AIPasteSampleApp` プロジェクトを開き、デバッグ実行します。
 4. クリップボードにテキストがある状態で `Smart Paste` ボタンを押してください。
+
+## コードのポイント
+
+`SmartPasteLib` プロジェクトの以下のクラスが Smart paste の実装に関連するクラスになります。
+
+- `SmartPastePlaneFunctionCalling.cs`
+  - Azure OpenAI Service の Tools の関数呼び出しの機能を使って、Smart Paste を実装しています。
+- `SmartPaste.cs`
+  - Semantic Kernel の `FunctionCallingStepwisePlanner` を使って、Smart Paste を実装しています。
+
