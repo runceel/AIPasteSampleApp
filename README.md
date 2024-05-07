@@ -3,7 +3,7 @@
 ## 動作方法
 
 1. Azure OpenAI Service のリソースを作成し gpt 3.5 turbo のモデルを `gpt-35-turbo` という名前でデプロイします。
-2. `AIPasteSampleApp` プロジェクトの `appsettings.json` に `Endpoint` と `ApiKey` を設定します。
+2. `SmartPasteApp` プロジェクトの `appsettings.json` に `Endpoint` と `ApiKey` を設定します。
     ```json:appsettings.json
     {
       "Logging": {
