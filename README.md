@@ -20,7 +20,7 @@
       }
     }
     ```
-3. Visual Studio で `AIPasteSampleApp` プロジェクトを開き、デバッグ実行します。
+3. Visual Studio で `SmartPasteApp` プロジェクトを開き、デバッグ実行します。
 4. クリップボードにテキストがある状態で `Smart Paste` ボタンを押してください。
 
 ## コードのポイント
